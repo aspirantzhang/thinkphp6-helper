@@ -1,4 +1,4 @@
-Thinkphp6 Model Creator
+Octopus Helper
 ===
 ![Do not use](https://img.shields.io/badge/Under%20development-Don't%20use-red)
 
