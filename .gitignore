@@ -1,0 +1,10 @@
+/.idea
+/.vscode
+/vendor
+/build
+/runtime
+*.log
+.env
+.phpunit.cache
+phpunit.xml
+.phpunit.result.cache
