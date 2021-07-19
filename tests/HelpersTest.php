@@ -305,4 +305,29 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
         );
         $this->assertFalse($actual);
     }
+
+    public function testMakeDirSuccessfully()
+    {
+        $filePath = createPath(dirname(__DIR__), 'runtime', 'file', 'dir-test');
+        $actual = makeDir($filePath);
+        $this->assertTrue($actual);
+        $this->assertTrue(is_dir($filePath));
+        return $filePath;
+    }
+    /**
+    * @depends testMakeDirSuccessfully
+    */
+    public function testMakeDirFailed($filePath)
+    {
+        $actual = makeDir($filePath);
+        $this->assertFalse($actual);
+        return $filePath;
+    }
+    /**
+    * @depends testMakeDirFailed
+    */
+    public function testDeleteDirSuccessfully($filePath)
+    {
+        $this->assertTrue(deleteDir($filePath));
+    }
 }

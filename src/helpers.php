@@ -202,3 +202,38 @@ if (!function_exists('matchSnapshot')) {
         return true;
     }
 }
+
+if (!function_exists('makeDir')) {
+    function makeDir(string $dirName)
+    {
+        if (!file_exists($dirName)) {
+            return mkdir($dirName, 0777, true);
+        }
+        return false;
+    }
+}
+
+if (!function_exists('deleteDirectory')) {
+    function deleteDir(string $dirName)
+    {
+        if (!file_exists($dirName)) {
+            return true;
+        }
+
+        if (!is_dir($dirName)) {
+            return unlink($dirName);
+        }
+
+        foreach (scandir($dirName) as $item) {
+            if ($item == '.' || $item == '..') {
+                continue;
+            }
+
+            if (!deleteDir($dirName . DIRECTORY_SEPARATOR . $item)) {
+                return false;
+            }
+        }
+
+        return rmdir($dirName);
+    }
+}
