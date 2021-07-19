@@ -287,4 +287,22 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
         }
         $this->assertEquals($expect, $actual);
     }
+
+    public function testMatchSnapshotSuccessfully()
+    {
+        $actual = matchSnapshot(
+            createPath(__DIR__, 'file', 'foo') . '.php',
+            createPath(__DIR__, '__snapshots__', 'foo') . '.stub'
+        );
+        $this->assertTrue($actual);
+    }
+
+    public function testMatchSnapshotFailed()
+    {
+        $actual = matchSnapshot(
+            createPath(__DIR__, 'file', 'bar') . '.php',
+            createPath(__DIR__, '__snapshots__', 'foo') . '.stub'
+        );
+        $this->assertFalse($actual);
+    }
 }

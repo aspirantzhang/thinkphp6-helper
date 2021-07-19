@@ -190,3 +190,15 @@ if (!function_exists('createPath')) {
         return join(DIRECTORY_SEPARATOR, $path);
     }
 }
+
+if (!function_exists('matchSnapshot')) {
+    function matchSnapshot(string $filePath, string $snapshotPath)
+    {
+        $fileContent = file_get_contents($filePath);
+        $snapshotContent = file_get_contents($snapshotPath);
+        if ($fileContent === false || $snapshotContent === false || $fileContent !== $snapshotContent) {
+            return false;
+        }
+        return true;
+    }
+}
