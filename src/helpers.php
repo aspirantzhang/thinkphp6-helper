@@ -183,3 +183,10 @@ if (!function_exists('recursiveSearchChildrenValue')) {
         return $result;
     }
 }
+
+if (!function_exists('createPath')) {
+    function createPath(string ...$path): string
+    {
+        return join(DIRECTORY_SEPARATOR, $path);
+    }
+}

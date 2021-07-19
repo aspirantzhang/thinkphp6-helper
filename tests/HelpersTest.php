@@ -276,4 +276,15 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
         $expect5 = [];
         $this->assertEqualsCanonicalizing($expect5, $actual5);
     }
+
+    public function testCreatePathValidParam()
+    {
+        $actual = createPath('a', 'b', 'c');
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $expect = 'a\\b\\c';
+        } else {
+            $expect = 'a/b/c';
+        }
+        $this->assertEquals($expect, $actual);
+    }
 }
