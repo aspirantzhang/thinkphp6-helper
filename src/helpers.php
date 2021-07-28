@@ -1,5 +1,14 @@
 <?php
 
+use think\facade\Lang;
+
+if (!function_exists('__')) {
+    function __(string $name, array $vars = [], string $lang = ''): string
+    {
+        return Lang::get($name, $vars, $lang) ?: '';
+    }
+}
+
 if (!function_exists('validateDateTime')) {
     function validateDateTime($date, $format = 'Y-m-d H:i:s')
     {

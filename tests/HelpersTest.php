@@ -4,8 +4,29 @@ declare(strict_types=1);
 
 namespace aspirantzhang\tests;
 
+use Mockery as m;
+
 class HelpersTest extends \PHPUnit\Framework\TestCase
 {
+    protected function setUp(): void
+    {
+        $langMock = m::mock('alias:think\facade\Lang');
+        $langMock->shouldReceive('get')->andReturnUsing(function (string $name, array $vars = [], string $lang = '') {
+            if (!empty($vars)) {
+                return $name . ': ' . implode(';', array_map(function ($key, $value) {
+                    return $key . '=' . $value;
+                }, array_keys($vars), $vars));
+            }
+            return $name;
+        });
+    }
+
+    public function testGetLang()
+    {
+        $this->assertEquals(__('foo'), 'foo');
+        $this->assertEquals(__('foo', ['a' => 'b']), 'foo: a=b');
+        $this->assertEquals(__('foo', ['a' => 'b', 'c' => 'd']), 'foo: a=b;c=d');
+    }
 
     public function testInvalidDatetimeShouldReturnFalse()
     {
