@@ -1,6 +1,7 @@
 <?php
 
 use think\facade\Lang;
+use think\facade\Db;
 
 if (!function_exists('__')) {
     function __(string $name, array $vars = [], string $lang = ''): string
@@ -244,5 +245,16 @@ if (!function_exists('deleteDirectory')) {
         }
 
         return rmdir($dirName);
+    }
+}
+if (!function_exists('tableExists')) {
+    function tableExists(string $tableName): bool
+    {
+        try {
+            Db::query("select 1 from `$tableName` LIMIT 1");
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;
     }
 }
