@@ -247,6 +247,7 @@ if (!function_exists('deleteDirectory')) {
         return rmdir($dirName);
     }
 }
+
 if (!function_exists('tableExists')) {
     function tableExists(string $tableName): bool
     {
@@ -256,5 +257,13 @@ if (!function_exists('tableExists')) {
             return false;
         }
         return true;
+    }
+}
+
+if (!function_exists('isAssocArray')) {
+    function isAssocArray(array $arr): bool
+    {
+        $keys = array_keys($arr);
+        return array_keys($keys) !== $keys;
     }
 }

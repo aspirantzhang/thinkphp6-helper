@@ -351,4 +351,12 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue(deleteDir($filePath));
     }
+
+    public function testIsAssocArray()
+    {
+        $this->assertFalse(isAssocArray([1,2,3]));
+        $this->assertFalse(isAssocArray(['a']));
+        $this->assertFalse(isAssocArray(["0" => 'a', "1" => 'b', "2" => 'c']));
+        $this->assertTrue(isAssocArray(["a" => 'a']));
+    }
 }
