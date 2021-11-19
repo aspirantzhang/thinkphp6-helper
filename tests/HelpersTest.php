@@ -359,4 +359,16 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse(isAssocArray(["0" => 'a', "1" => 'b', "2" => 'c']));
         $this->assertTrue(isAssocArray(["a" => 'a']));
     }
+
+    public function testIsInt()
+    {
+        $expectIsInt = [0, '0', 33, '33', -10, '-10', 0x24, true, false];
+        $expectIsNotInt = [null, '22f2', .22, '1.22', -1.22, PHP_INT_MAX + 1];
+        foreach ($expectIsInt as $value) {
+            $this->assertTrue(isInt($value));
+        }
+        foreach ($expectIsNotInt as $value) {
+            $this->assertFalse(isInt($value));
+        }
+    }
 }

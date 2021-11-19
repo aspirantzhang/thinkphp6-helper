@@ -267,3 +267,16 @@ if (!function_exists('isAssocArray')) {
         return array_keys($keys) !== $keys;
     }
 }
+
+if (!function_exists('isInt')) {
+    function isInt($value): bool
+    {
+        if (
+            $value === false ||
+            filter_var($value, FILTER_VALIDATE_INT) !== false
+        ) {
+            return true;
+        }
+        return false;
+    }
+}
