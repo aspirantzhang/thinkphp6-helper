@@ -17,6 +17,7 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
                     return $key . '=' . $value;
                 }, array_keys($vars), $vars));
             }
+
             return $name;
         });
     }
@@ -45,18 +46,18 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
     public function testArrayToTreeValidParam()
     {
         $actual = arrayToTree([
-            [ 'id' => 1, 'parent_id' => 0 ],
-            [ 'id' => 2, 'parent_id' => 0 ],
-            [ 'id' => 3, 'parent_id' => 1 ],
-            [ 'id' => 4, 'parent_id' => 3 ],
+            ['id' => 1, 'parent_id' => 0],
+            ['id' => 2, 'parent_id' => 0],
+            ['id' => 3, 'parent_id' => 1],
+            ['id' => 4, 'parent_id' => 3],
         ]);
         $expect = [
-            [ 'id' => 1, 'parent_id' => 0, 'depth' => 1 , 'children' => [
-                [ 'id' => 3, 'parent_id' => 1, 'depth' => 2, 'children' => [
-                    [ 'id' => 4, 'parent_id' => 3, 'depth' => 3 ]
-                ]]
+            ['id' => 1, 'parent_id' => 0, 'depth' => 1, 'children' => [
+                ['id' => 3, 'parent_id' => 1, 'depth' => 2, 'children' => [
+                    ['id' => 4, 'parent_id' => 3, 'depth' => 3],
+                ]],
             ]],
-            [ 'id' => 2, 'parent_id' => 0, 'depth' => 1 ]
+            ['id' => 2, 'parent_id' => 0, 'depth' => 1],
         ];
         $this->assertEqualsCanonicalizing($expect, $actual);
     }
@@ -76,17 +77,17 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
     public function testArrayToTreeIfNoParent()
     {
         $actual = arrayToTree([
-            [ 'id' => 1, 'parent_id' => 0 ],
-            [ 'id' => 2, 'parent_id' => 0 ],
-            [ 'id' => 3, 'parent_id' => 99999 ],
-            [ 'id' => 4, 'parent_id' => 1 ]
+            ['id' => 1, 'parent_id' => 0],
+            ['id' => 2, 'parent_id' => 0],
+            ['id' => 3, 'parent_id' => 99999],
+            ['id' => 4, 'parent_id' => 1],
         ]);
         $expect = [
-            [ 'id' => 1, 'parent_id' => 0, 'depth' => 1 , 'children' => [
-                [ 'id' => 4, 'parent_id' => 1, 'depth' => 2 ]
+            ['id' => 1, 'parent_id' => 0, 'depth' => 1, 'children' => [
+                ['id' => 4, 'parent_id' => 1, 'depth' => 2],
             ]],
-            [ 'id' => 2, 'parent_id' => 0, 'depth' => 1 ],
-            [ 'id' => 3, 'parent_id' => 0, 'depth' => 1 ]
+            ['id' => 2, 'parent_id' => 0, 'depth' => 1],
+            ['id' => 3, 'parent_id' => 0, 'depth' => 1],
         ];
 
         $this->assertEqualsCanonicalizing($expect, $actual);
@@ -95,9 +96,9 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
     public function testArrayToTreeIfNoRoot()
     {
         $actual = arrayToTree([
-            [ 'id' => 1, 'parent_id' => 0 ],
-            [ 'id' => 2, 'parent_id' => 0 ],
-            [ 'id' => 3, 'parent_id' => 1 ],
+            ['id' => 1, 'parent_id' => 0],
+            ['id' => 2, 'parent_id' => 0],
+            ['id' => 3, 'parent_id' => 1],
         ], 99);
         $expect = [];
 
@@ -107,33 +108,31 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
     public function testArrayToTreeIfParentIdLessThanZero()
     {
         $actual = arrayToTree([
-            [ 'id' => 1, 'parent_id' => 0 ],
-            [ 'id' => 2, 'parent_id' => 1 ],
-            [ 'id' => 0, 'parent_id' => -1 ],
-            [ 'id' => 3, 'parent_id' => 999 ],
+            ['id' => 1, 'parent_id' => 0],
+            ['id' => 2, 'parent_id' => 1],
+            ['id' => 0, 'parent_id' => -1],
+            ['id' => 3, 'parent_id' => 999],
         ], -1);
         $expect = [
-            [ 'id' => 0, 'parent_id' => -1, 'depth' => 1, 'children' => [
-                [ 'id' => 1, 'parent_id' => 0, 'depth' => 2 , 'children' => [
-                    [ 'id' => 2, 'parent_id' => 1, 'depth' => 3 ]
+            ['id' => 0, 'parent_id' => -1, 'depth' => 1, 'children' => [
+                ['id' => 1, 'parent_id' => 0, 'depth' => 2, 'children' => [
+                    ['id' => 2, 'parent_id' => 1, 'depth' => 3],
                 ]],
-                [ 'id' => 3, 'parent_id' => 0, 'depth' => 2 ]
-            ]]
+                ['id' => 3, 'parent_id' => 0, 'depth' => 2],
+            ]],
         ];
 
         $this->assertEqualsCanonicalizing($expect, $actual);
     }
-
-
 
     public function testExtractValuesInvalidParam()
     {
         $this->assertEqualsCanonicalizing([], extractValues([]));
         $this->assertEqualsCanonicalizing([], extractValues([], 'whatever...', 'whatever...'));
         $actual = extractValues([
-            [ 'unit' => 'test1', 'other' => '...' ],
-            [ 'unit' => 'test2', 'other' => '...' ],
-            [ 'unit' => 'test3', 'other' => '...' ],
+            ['unit' => 'test1', 'other' => '...'],
+            ['unit' => 'test2', 'other' => '...'],
+            ['unit' => 'test3', 'other' => '...'],
         ], 'unknown');
         $expect = [];
         $this->assertEqualsCanonicalizing($expect, $actual);
@@ -142,8 +141,8 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
     public function testExtractValuesValidParam()
     {
         $actual = extractValues([
-            [ 'unit' => 'test1', 'other' => '...' ],
-            [ 'unit' => 'test2', 'other' => '...' ],
+            ['unit' => 'test1', 'other' => '...'],
+            ['unit' => 'test2', 'other' => '...'],
         ], 'unit');
         $expect = ['test1', 'test2'];
         $this->assertEqualsCanonicalizing($expect, $actual);
@@ -151,14 +150,14 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
         $actual2 = extractValues([
             [
                 'data' => [
-                    [ 'unit' => 'test1', 'other' => '...' ],
-                    [ 'unit' => 'test2', 'other' => '...' ],
+                    ['unit' => 'test1', 'other' => '...'],
+                    ['unit' => 'test2', 'other' => '...'],
                 ],
             ],
             [
                 'data' => [
-                    [ 'unit' => 'test3', 'other' => '...' ],
-                    [ 'unit' => 'test2', 'other' => '...' ],
+                    ['unit' => 'test3', 'other' => '...'],
+                    ['unit' => 'test2', 'other' => '...'],
                 ],
             ],
         ], 'unit', 'data');
@@ -168,14 +167,14 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
         $actual3 = extractValues([
             [
                 'data' => [
-                    [ 'unit' => 'test1', 'other' => '...' ],
-                    [ 'unit' => 'test2', 'other' => '...' ],
+                    ['unit' => 'test1', 'other' => '...'],
+                    ['unit' => 'test2', 'other' => '...'],
                 ],
             ],
             [
                 'data' => [
-                    [ 'unit' => 'test3', 'other' => '...' ],
-                    [ 'unit' => 'test2', 'other' => '...' ],
+                    ['unit' => 'test3', 'other' => '...'],
+                    ['unit' => 'test2', 'other' => '...'],
                 ],
             ],
         ], 'unit', 'data', false);
@@ -185,12 +184,12 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
         $actual4 = extractValues([
             [
                 'data' => [
-                    'unit' => 'test1'
+                    'unit' => 'test1',
                 ],
             ],
             [
                 'data' => [
-                    'unit' => 'test2'
+                    'unit' => 'test2',
                 ],
             ],
         ], 'unit', 'data');
@@ -200,21 +199,21 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
         $actual5 = extractValues([
             [
                 'data' => [
-                    'unit' => ['value1','value2']
+                    'unit' => ['value1', 'value2'],
                 ],
             ],
             [
                 'data' => [
-                    'unit' => ['value3','value4']
+                    'unit' => ['value3', 'value4'],
                 ],
             ],
         ], 'unit', 'data');
-        $expect5 = [['value1','value2'], ['value3','value4']];
+        $expect5 = [['value1', 'value2'], ['value3', 'value4']];
         $this->assertEqualsCanonicalizing($expect5, $actual5);
 
         $actual6 = extractValues([
-            [ 'unit' => 'test1', 'other' => '...' ],
-            [ 'unit' => 'test1', 'other' => '...' ],
+            ['unit' => 'test1', 'other' => '...'],
+            ['unit' => 'test1', 'other' => '...'],
         ], 'unit', '', false);
         $expect6 = ['test1', 'test1'];
         $this->assertEqualsCanonicalizing($expect6, $actual6);
@@ -249,13 +248,13 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
                                     [
                                         'id' => 5,
                                         'name' => 'five',
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $actual1 = searchDescendantValueAggregation('id', 'name', 'two', $array);
@@ -314,20 +313,24 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
         $actual = makeDir($filePath);
         $this->assertTrue($actual);
         $this->assertTrue(is_dir($filePath));
+
         return $filePath;
     }
+
     /**
-    * @depends testMakeDirSuccessfully
-    */
+     * @depends testMakeDirSuccessfully
+     */
     public function testMakeDirFailed($filePath)
     {
         $actual = makeDir($filePath);
         $this->assertFalse($actual);
+
         return $filePath;
     }
+
     /**
-    * @depends testMakeDirFailed
-    */
+     * @depends testMakeDirFailed
+     */
     public function testDeleteDirSuccessfully($filePath)
     {
         $this->assertTrue(deleteDir($filePath));
@@ -335,10 +338,10 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
 
     public function testIsAssocArray()
     {
-        $this->assertFalse(isAssocArray([1,2,3]));
+        $this->assertFalse(isAssocArray([1, 2, 3]));
         $this->assertFalse(isAssocArray(['a']));
-        $this->assertFalse(isAssocArray(["0" => 'a', "1" => 'b', "2" => 'c']));
-        $this->assertTrue(isAssocArray(["a" => 'a']));
+        $this->assertFalse(isAssocArray(['0' => 'a', '1' => 'b', '2' => 'c']));
+        $this->assertTrue(isAssocArray(['a' => 'a']));
     }
 
     public function testIsInt()

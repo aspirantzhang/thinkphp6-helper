@@ -1,7 +1,7 @@
 <?php
 
-use think\facade\Lang;
 use think\facade\Db;
+use think\facade\Lang;
 
 if (!function_exists('__')) {
     function __(string $name, array $vars = [], string $lang = ''): string
@@ -14,6 +14,7 @@ if (!function_exists('convertTime')) {
     function convertTime(string $timeString, string $format = 'Y-m-d H:i:s')
     {
         $date = new \DateTime($timeString);
+
         return $date->format($format);
     }
 }
@@ -23,7 +24,7 @@ if (!function_exists('createTreeBranch')) {
     function createTreeBranch(array &$parents, array $children, int $depth = 0): array
     {
         $tree = [];
-        $depth++;
+        ++$depth;
         foreach ($children as $child) {
             $child['depth'] = $depth;
             if (isset($parents[$child['id']])) {
@@ -32,16 +33,17 @@ if (!function_exists('createTreeBranch')) {
             }
             $tree[] = $child;
         }
+
         return $tree;
     }
 }
 
 if (!function_exists('arrayToTree')) {
     /**
-    * convert Array to Tree
-    * @link https://stackoverflow.com/a/22020668/8819175
-    * @return array
-    */
+     * convert Array to Tree.
+     *
+     * @see https://stackoverflow.com/a/22020668/8819175
+     */
     function arrayToTree(array $flat, int $root = 0): array
     {
         if (isTreeArray($flat)) {
@@ -52,6 +54,7 @@ if (!function_exists('arrayToTree')) {
                 if ($row['parent_id'] > 0 && !in_array($row['parent_id'], $allIds)) {
                     $row['parent_id'] = 0;
                 }
+
                 return $row;
             }, $flat);
 
@@ -64,8 +67,10 @@ if (!function_exists('arrayToTree')) {
             if (!isset($parents[$root])) {
                 return [];
             }
+
             return createTreeBranch($parents, $parents[$root]);
         }
+
         return [];
     }
 }
@@ -73,9 +78,10 @@ if (!function_exists('arrayToTree')) {
 if (!function_exists('isTreeArray')) {
     function isTreeArray(array $array = []): bool
     {
-        if (is_array($array) && isset($array[0]['id']) && isset($array[0]['parent_id'])) {
+        if (is_array($array) && isset($array[0]['id'], $array[0]['parent_id'])) {
             return true;
         }
+
         return false;
     }
 }
@@ -84,6 +90,7 @@ if (!function_exists('isMultiArray')) {
     function isMultiArray(array $array): bool
     {
         $multiCount = array_filter($array, 'is_array');
+
         return count($multiCount) > 0;
     }
 }
@@ -91,11 +98,6 @@ if (!function_exists('isMultiArray')) {
 if (!function_exists('extractValues')) {
     /**
      * Extract some key values ​​from the array.
-     * @param array $array
-     * @param string $targetKeyName
-     * @param string $parentKeyName
-     * @param bool $unique
-     * @return array
      */
     function extractValues(array $array = [], string $targetKeyName = 'id', string $parentKeyName = '', bool $unique = true): array
     {
@@ -120,6 +122,7 @@ if (!function_exists('extractValues')) {
             if (isMultiArray($result)) {
                 return array_unique($result, SORT_REGULAR);
             }
+
             return array_unique($result);
         }
 
@@ -127,6 +130,7 @@ if (!function_exists('extractValues')) {
         if (!$unique) {
             return array_column($array, $targetKeyName);
         }
+
         return array_unique(array_column($array, $targetKeyName), SORT_REGULAR);
     }
 }
@@ -160,7 +164,7 @@ if (!function_exists('searchArrayByElement')) {
         foreach ($iterator as $currentIteratorValue) {
             $subIterator = $iterator->getSubIterator();
             if (isset($subIterator[$key]) && $subIterator[$key] === $value) {
-                return (iterator_to_array($subIterator));
+                return iterator_to_array($subIterator);
             }
         }
 
@@ -198,6 +202,7 @@ if (!function_exists('matchSnapshot')) {
         if ($fileContent === false || $snapshotContent === false || $fileContent !== $snapshotContent) {
             return false;
         }
+
         return true;
     }
 }
@@ -206,8 +211,9 @@ if (!function_exists('makeDir')) {
     function makeDir(string $dirName)
     {
         if (!file_exists($dirName)) {
-            return mkdir($dirName, 0777, true);
+            return mkdir($dirName, 0o777, true);
         }
+
         return false;
     }
 }
@@ -245,6 +251,7 @@ if (!function_exists('tableExists')) {
         } catch (Exception $e) {
             return false;
         }
+
         return true;
     }
 }
@@ -253,6 +260,7 @@ if (!function_exists('isAssocArray')) {
     function isAssocArray(array $arr): bool
     {
         $keys = array_keys($arr);
+
         return array_keys($keys) !== $keys;
     }
 }
@@ -266,6 +274,7 @@ if (!function_exists('isInt')) {
         ) {
             return true;
         }
+
         return false;
     }
 }
