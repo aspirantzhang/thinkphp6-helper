@@ -10,17 +10,6 @@ if (!function_exists('__')) {
     }
 }
 
-if (!function_exists('validateDateTime')) {
-    function validateDateTime($date, $format = 'Y-m-d H:i:s')
-    {
-        if ($date) {
-            $d = DateTime::createFromFormat($format, $date);
-            return $d && $d->format($format) == $date;
-        }
-        return false;
-    }
-}
-
 if (!function_exists('convertTime')) {
     function convertTime(string $timeString, string $format = 'Y-m-d H:i:s')
     {
@@ -70,7 +59,7 @@ if (!function_exists('arrayToTree')) {
             foreach ($flat as $a) {
                 $parents[$a['parent_id']][] = $a;
             }
-        
+
             // if root does not exist
             if (!isset($parents[$root])) {
                 return [];
@@ -154,7 +143,7 @@ if (!function_exists('searchDescendantValueAggregation')) {
                 return [];
             }
         }
-    
+
         if (!$deepSearch) {
             return array_column($currentElement['children'], $keyName);
         }

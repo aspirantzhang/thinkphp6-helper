@@ -28,25 +28,6 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(__('foo', ['a' => 'b', 'c' => 'd']), 'foo: a=b;c=d');
     }
 
-    public function testInvalidDatetimeShouldReturnFalse()
-    {
-        $this->assertFalse(validateDateTime(''));
-        $this->assertFalse(validateDateTime(0));
-        $this->assertFalse(validateDateTime([]));
-        $this->assertFalse(validateDateTime(null));
-        $this->assertFalse(validateDateTime("\t"));
-        $this->assertFalse(validateDateTime("\n"));
-        $this->assertFalse(validateDateTime("\r"));
-        $this->assertFalse(validateDateTime(' '));
-        $this->assertFalse(validateDateTime(true));
-        $this->assertFalse(validateDateTime(false));
-    }
-
-    public function testValidDatetimeShouldReturnTrue()
-    {
-        $this->assertTrue(validateDateTime('2020-04-02 11:59:59'));
-    }
-
     public function testInvalidParamConvertTimeShouldReturnCurrent()
     {
         $this->assertEquals(convertTime(''), date('Y-m-d H:i:s'));
