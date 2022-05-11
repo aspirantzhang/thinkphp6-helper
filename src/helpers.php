@@ -278,3 +278,16 @@ if (!function_exists('isInt')) {
         return false;
     }
 }
+if (!function_exists('unsetByValue')) {
+    function unsetByValue(string | int $needle, array &$haystack): bool
+    {
+        $key = array_search($needle, $haystack);
+        if ($key !== false) {
+            unset($haystack[$key]);
+
+            return true;
+        }
+
+        return false;
+    }
+}

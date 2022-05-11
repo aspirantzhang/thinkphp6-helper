@@ -355,4 +355,35 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
             $this->assertFalse(isInt($value));
         }
     }
+
+    public function testUnsetByValueReturnTrue()
+    {
+        $string = 'needle';
+        $int = 1;
+        $haystack = ['a', 1, 'needle', 'bar'];
+
+        $this->assertTrue(unsetByValue($string, $haystack));
+        $this->assertTrue(unsetByValue($int, $haystack));
+    }
+
+    public function testUnsetByValueReturnFalse()
+    {
+        $string = 'foo';
+        $int = 2;
+        $haystack = ['a', 1, 'needle', 'bar'];
+
+        $this->assertFalse(unsetByValue($string, $haystack));
+        $this->assertFalse(unsetByValue($int, $haystack));
+    }
+
+    public function testUnsetByValueInputArrayChange()
+    {
+        $haystack = ['a', 1, 'needle', 'bar'];
+        $string = 'needle';
+        $int = 1;
+        unsetByValue($string, $haystack);
+        $this->assertEqualsCanonicalizing(['a', 1, 'bar'], $haystack);
+        unsetByValue($int, $haystack);
+        $this->assertEqualsCanonicalizing(['a', 'bar'], $haystack);
+    }
 }
