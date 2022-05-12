@@ -1,7 +1,0 @@
-linter:
-  code_sniffer:
-    dir: src/
-    standard: PSR12
-    extensions: [php]
-  phpmd:
-    target: [src/]
